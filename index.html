@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>6G Technology Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f8;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 100%;
+      background: #2f3542;
+      color: #fff;
+      padding: 20px;
+    }
+
+    .sidebar h2 {
+      font-size: 22px;
+      margin-bottom: 30px;
+    }
+
+    .sidebar a {
+      color: #dcdde1;
+      text-decoration: none;
+      display: block;
+      margin: 15px 0;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+      color: #00cec9;
+    }
+
+    .main {
+      margin-left: 240px;
+      padding: 20px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      padding: 10px 20px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    }
+
+    .topbar h1 {
+      font-size: 24px;
+      color: #2d3436;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #fff;
+      padding: 20px;
+      margin: 10px;
+      flex: 1 1 200px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border-radius: 6px;
+    }
+
+    .card h3 {
+      margin: 0;
+      color: #0984e3;
+    }
+
+    .card p {
+      color: #636e72;
+    }
+
+    canvas {
+      max-width: 100%;
+      margin-top: 20px;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>6G Dashboard</h2>
+    <a href="#">Overview</a>
+    <a href="#">Network Stats</a>
+    <a href="#">Device Usage</a>
+    <a href="#">Latency</a>
+    <a href="#">Settings</a>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <h1>Welcome to 6G Tech Panel</h1>
+      <div>
+        <button onclick="refreshData()">🔄 Refresh</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="card">
+        <h3 id="speed">1 Tbps</h3>
+        <p>Average Speed</p>
+      </div>
+      <div class="card">
+        <h3 id="latency">0.1 ms</h3>
+        <p>Latency</p>
+      </div>
+      <div class="card">
+        <h3 id="devices">12M</h3>
+        <p>Connected Devices</p>
+      </div>
+      <div class="card">
+        <h3 id="coverage">98%</h3>
+        <p>Global Coverage</p>
+      </div>
+    </div>
+
+    <canvas id="usageChart" height="120"></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Dummy chart data
+    const ctx = document.getElementById('usageChart').getContext('2d');
+    const usageChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+          label: 'Data Usage (PB)',
+          data: [12, 19, 14, 20, 24, 30],
+          backgroundColor: 'rgba(9,132,227,0.2)',
+          borderColor: '#0984e3',
+          borderWidth: 2,
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true
+          }
+        }
+      }
+    });
+
+    // Function to simulate refreshing data
+    function refreshData() {
+      document.getElementById("speed").textContent = (0.9 + Math.random() * 0.2).toFixed(2) + " Tbps";
+      document.getElementById("latency").textContent = (Math.random() * 0.2).toFixed(2) + " ms";
+      document.getElementById("devices").textContent = (10 + Math.random() * 5).toFixed(1) + "M";
+      document.getElementById("coverage").textContent = (95 + Math.random() * 5).toFixed(1) + "%";
+
+      // Update chart
+      usageChart.data.datasets[0].data = Array.from({length: 6}, () => Math.floor(10 + Math.random() * 25));
+      usageChart.update();
+    }
+  </script>
+</body>
+</html>
